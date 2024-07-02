@@ -1,0 +1,71 @@
+<ion-menu side="end" menuId="share-menu" contentId="share-content">
+  <ion-header>
+    <ion-toolbar class="menu-toolbar">
+      <ion-title>SHARE</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <div>
+      <ion-button expand="block" (click)="writeToClipboard()">Copy to Clipboard</ion-button>
+      <qrcode class="menu-qr" [qrdata]="this.gameUrl" [allowEmptyString]="true" [width]="272" [errorCorrectionLevel]="'M'"></qrcode>
+    </div>
+  </ion-content>
+</ion-menu>
+
+<ion-menu side="end" menuId="settings-menu" contentId="settings-content">
+  <ion-header>
+    <ion-toolbar class="menu-toolbar">
+      <ion-title>SETTINGS</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <div>e=hello</div>
+  </ion-content>
+</ion-menu>
+
+<ion-menu side="end" menuId="group-menu" contentId="group-content">
+  <ion-header>
+    <ion-toolbar class="menu-toolbar">
+      <ion-title>GROUP</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <div>e=hello</div>
+  </ion-content>
+</ion-menu>
+
+<ion-menu side="end" menuId="user-menu" contentId="user-content">
+  <ion-header>
+    <ion-toolbar class="menu-toolbar">
+      <ion-title>USER</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <div>e=hello</div>
+  </ion-content>
+</ion-menu>
+
+<ion-menu side="end" menuId="mobile-menu" contentId="mobile-content">
+  <ion-header>
+    <ion-toolbar class="menu-toolbar">
+      <ion-title>MENU</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-list class="menu-list" [inset]="false">
+      <ion-item class="menu-list">
+        <ion-label (click)="openFirstMenu('share')"><ion-icon name="share-social-sharp" /> Share</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label (click)="openFirstMenu('settings')"><ion-icon name="settings-sharp" /> Settings</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label (click)="openFirstMenu('group')"><ion-icon name="people-sharp" /> Group</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label (click)="openFirstMenu('user')"><ion-icon name="person-sharp" /> User</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+

@@ -25,3 +25,13 @@
 #container a {
   text-decoration: none;
 }
+
+.custom-alert {
+  --background: #2F3645; // Change background color
+  --border-radius: 20px; // Increase border radius
+  --width: 400px;
+}
+
+.custom-button {
+  --color: green; // Apply success color to button
+}
