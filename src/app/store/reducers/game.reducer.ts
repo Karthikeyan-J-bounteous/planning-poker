@@ -4,6 +4,7 @@ import { resetStore, updateGame } from 'src/app/store/actions/game.actions';
 
 export const initialState: Game = {
   canChangeCard: false,
+  show: true,
   deck: 0,
   id: '',
   reveal: false,

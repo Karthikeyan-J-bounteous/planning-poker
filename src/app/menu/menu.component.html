@@ -64,6 +64,18 @@
       </ion-segment>
       <p style="color: black;">choose whether players can change their estimate after the cards have been revealed</p>
     </div>
+    <h2 style="color: #3b3b49;">Reveal Cards</h2>
+    <div style="margin-bottom: 25px;">
+      <ion-segment class="ion-seg" [(ngModel)]="revealCards" (ionChange)="revealCard()">
+        <ion-segment-button class="ion-seg-b" value="yes">
+          <ion-label>YES</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="no">
+          <ion-label>NO</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <p style="color: black;">choose whether players' cards should be revealed</p>
+    </div>
   </ion-content>
 </ion-menu>
 

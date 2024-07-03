@@ -23,6 +23,7 @@ export class InfoModalComponent  implements OnInit {
   public players$?: Observable<Player[]>;
   public activeId$?: Observable<string | null>;
   public playerDetail: Player = {} as Player;
+
   isSpectating?: boolean;
 
   cards = [
@@ -64,7 +65,8 @@ export class InfoModalComponent  implements OnInit {
         if (playerData) {
           this.playerDetail = { ...this.playerDetail, ...playerData };
           this.isSpectating = !this.playerDetail.isPlaying;
-          this.isClicked = this.playerDetail.selectedCard;
+          console.log(this.playerDetail.isPlaying, this.isSpectating)
+          this.isClicked = !this.isSpectating? this.playerDetail.selectedCard : undefined;
         }
       })
     ).subscribe();
@@ -82,7 +84,8 @@ export class InfoModalComponent  implements OnInit {
   }
 
   click(val : string){
-    if(val == this.isClicked) return;
+    console.log(val, this.isClicked, this.isSpectating)
+    if(val == this.isClicked || this.isSpectating) return;
     this.isClicked = val;
     this.store.dispatch(updatePlayer({ id: this.activePlayerId, player: { selectedCard: this.isClicked, hasSelectedCard: !!this.isClicked } }));
   }

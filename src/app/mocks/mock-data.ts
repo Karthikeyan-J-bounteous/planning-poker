@@ -6,6 +6,7 @@ export const mockGame: Game = {
   canChangeCard: false,
   deck: 1,
   id: '',
+  show: true,
   reveal: true,
   mode: 'fibonacci',
   name: '',

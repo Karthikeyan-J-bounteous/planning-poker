@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Observable, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { Game } from '../interface/game.interface';
 import { AppState } from '../interface/state.interface';
 import { Store } from '@ngrx/store';
@@ -10,8 +10,7 @@ import { resetStore, updateGame } from '../store/actions/game.actions';
 import { Player } from '../interface/player.interface';
 import { selectActivePlayerId, selectPlayers } from '../store/selectors/player.selectors';
 import { setActivePlayerId, addPlayer, updatePlayerName } from '../store/actions/player.actions';
-import { map, filter, switchMap, tap } from 'rxjs/operators';
-import { take } from 'rxjs/operators';
+import { map, filter, switchMap, tap, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -28,11 +27,14 @@ export class HomePage implements OnInit {
 
   public card = true;
 
-  @ViewChild('cardContainer') cardContainer ?: ElementRef<HTMLDivElement>;
+  @ViewChild('cardContainer') cardContainer?: ElementRef<HTMLDivElement>;
   isOverflowing: boolean = false;
 
   public playerData: Player = { ...mockPlayer };
+
+  public playersData: Player[] = [];
   public gameData: Game = { ...mockGame };
+  public activePlayerId: string | null = null;
 
   public alertInputs = [
     {
@@ -53,6 +55,10 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
+    const game$ = this.game$ ?? of({} as Game);
+    const players$ = this.players$ ?? of([]);
+    const activeId$ = this.activeId$ ?? of(null);
+
     this.sessionId = this.route.snapshot.paramMap.get('sessionId');
 
     if (!this.sessionId) {
@@ -63,7 +69,21 @@ export class HomePage implements OnInit {
     this.subscribeToStore(this.players$, 'Player Data');
     this.subscribeToStore(this.activeId$, 'ID Data');
 
-    this.activeId$?.pipe(
+    combineLatest([game$, players$, activeId$]).pipe(
+      map(([gameData, playersData, activeId]) => {
+        this.gameData = { ...gameData };
+
+        this.playersData = [...playersData];
+        this.activePlayerId = activeId;
+
+        const playerData = this.playersData.find(user => user.id === activeId);
+        if (playerData) {
+          this.playerData = { ...this.playerData, ...playerData };
+        }
+      })
+    ).subscribe();
+
+    activeId$?.pipe(
       take(1),
       tap(activeId => {
         if (!activeId && this.sessionId) {
@@ -83,7 +103,7 @@ export class HomePage implements OnInit {
           this.askName();
         }
       }
-    })
+    });
   }
 
   ngAfterViewInit() {
@@ -93,15 +113,14 @@ export class HomePage implements OnInit {
 
   checkOverflow() {
     const container = this.cardContainer?.nativeElement;
-    if(container)
-    this.isOverflowing = container.scrollWidth > container.clientWidth;
+    if (container)
+      this.isOverflowing = container.scrollWidth > container.clientWidth;
   }
 
   initializePlayer(): void {
     const userId = this.generateId(Date.now().toString(), 20);
     this.playerData = { ...this.playerData, id: userId, isPlaying: true, isPresent: true, role: 'player' };
-    this.gameData.id = this.sessionId!;
-    this.gameData.playerIds.push(userId);
+    this.gameData = { ...this.gameData, id: this.sessionId!, playerIds: [...this.gameData.playerIds, userId] };
 
     this.store.dispatch(updateGame({ game: this.gameData }));
     this.store.dispatch(addPlayer({ player: this.playerData }));
@@ -149,10 +168,10 @@ export class HomePage implements OnInit {
   startSession(): void {
     const userId = this.generateId(Date.now().toString(), 20);
     this.playerData = { ...this.playerData, id: userId, isPlaying: true, isPresent: true, role: 'host' };
-    this.gameData.playerIds.push(userId);
+    this.gameData = { ...this.gameData, playerIds: [...this.gameData.playerIds, userId] };
 
     const sessionId = this.generateId(new Date().getTime().toString(), 5);
-    this.gameData.id = sessionId;
+    this.gameData = { ...this.gameData, id: sessionId };
 
     this.store.dispatch(updateGame({ game: this.gameData }));
     this.store.dispatch(addPlayer({ player: this.playerData }));

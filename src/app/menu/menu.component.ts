@@ -39,6 +39,7 @@ export class MenuComponent implements OnInit {
 
   selectedDeck: string = 'modifiedFibonacci';
   selectedRound: string = 'down';
+  revealCards: string = 'yes';
   selectedChange: string = "yes";
   decks: string[] = ['fibonaci', 'modifiedFibonacci', 'shirtSizes']
 
@@ -103,12 +104,15 @@ export class MenuComponent implements OnInit {
   selectChange() {
     this.store.dispatch(updateGame({ game: { ...this.gameData, canChangeCard: this.selectedChange === 'yes' } }));
   }
+  revealCard(){
+    this.store.dispatch(updateGame({ game: { ...this.gameData, reveal: this.revealCards === 'yes' } }));
+  }
 
   updatePlayerName() {
     this.store.dispatch(updatePlayer({ id: this.activePlayerId, player: { name: this.playerName } }));
   }
 
   toggleSpect() {
-    this.store.dispatch(updatePlayer({ id: this.activePlayerId, player: { isPlaying: this.isSpectating === 'yes' } }));
+    this.store.dispatch(updatePlayer({ id: this.activePlayerId, player: { isPlaying: !(this.isSpectating === 'yes'), selectedCard:"", hasSelectedCard: false } }));
   }
 }
