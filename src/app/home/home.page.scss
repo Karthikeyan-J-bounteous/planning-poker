@@ -1,3 +1,11 @@
+ion-content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Optional: center content horizontally */
+  align-items: center;   /* Optional: center content vertically */
+}
+
 #container {
   text-align: center;
 
@@ -11,6 +19,67 @@
 #container strong {
   font-size: 20px;
   line-height: 26px;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content:last baseline; /* Optional: center content horizontally */
+  align-items: center;   /* Optional: center content vertically */
+
+  ion-title{
+    height: 30px;
+  }
+}
+.container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.card-icon{
+  font-size: 45px;
+  color: #faf0ff;
+}
+
+.fixed-label {
+  position: absolute;
+  bottom: -15px; /* Adjust as needed to position the label near the card */
+  left: -15px; /* Adjust as needed to position the label near the card */
+  background-color: #faf0ff;
+  color: #000;
+  border: 2px solid #000;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.selector-container{
+  overflow-x: scroll;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  height: 25%;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.center-content {
+  justify-content: center;
+}
+
+.start-content {
+  justify-content: flex-start;
+}
+
+.selected-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: end;
+  height: 35%;
+  width: 100%;
 }
 
 #container p {
@@ -27,11 +96,60 @@
 }
 
 .custom-alert {
-  --background: #2F3645; // Change background color
-  --border-radius: 20px; // Increase border radius
+  --background: #4e586e; // Change background color
+  --border-radius: 40px; // Increase border radius
   --width: 400px;
 }
 
 .custom-button {
   --color: green; // Apply success color to button
+}
+
+
+.flip-card {
+  width: 100px;
+  margin: 20px 30px;
+  height: 150px;
+  min-width: 100px;
+  min-height: 150px;
+  perspective: 1000px; /* Lower numbers mean more extreme perspective */
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border: 3px dashed #000;
+  border-radius: 10px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  //box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-front {
+  background-color: #a488b6;
+  color: white;
+}
+
+.card-back {
+  background-color: #A5DD9B;
+  color: black;
+  transform: rotateY(180deg);
 }

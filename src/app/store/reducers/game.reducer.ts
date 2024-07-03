@@ -6,7 +6,7 @@ export const initialState: Game = {
   canChangeCard: false,
   deck: 0,
   id: '',
-  isRoom: false,
+  reveal: false,
   mode: '',
   name: '',
   rounding: false,

@@ -4,9 +4,9 @@ import { Player } from "../interface/player.interface";
 
 export const mockGame: Game = {
   canChangeCard: false,
-  deck: 0,
+  deck: 1,
   id: '',
-  isRoom: true,
+  reveal: true,
   mode: 'fibonacci',
   name: '',
   rounding: true,

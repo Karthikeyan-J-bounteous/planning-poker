@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Observable, of } from 'rxjs';
@@ -25,6 +25,11 @@ export class HomePage implements OnInit {
   public game$?: Observable<Game>;
   public players$?: Observable<Player[]>;
   public activeId$?: Observable<string | null>;
+
+  public card = true;
+
+  @ViewChild('cardContainer') cardContainer ?: ElementRef<HTMLDivElement>;
+  isOverflowing: boolean = false;
 
   public playerData: Player = { ...mockPlayer };
   public gameData: Game = { ...mockGame };
@@ -79,6 +84,17 @@ export class HomePage implements OnInit {
         }
       }
     })
+  }
+
+  ngAfterViewInit() {
+    this.checkOverflow();
+    window.addEventListener('resize', () => this.checkOverflow());
+  }
+
+  checkOverflow() {
+    const container = this.cardContainer?.nativeElement;
+    if(container)
+    this.isOverflowing = container.scrollWidth > container.clientWidth;
   }
 
   initializePlayer(): void {
@@ -143,5 +159,9 @@ export class HomePage implements OnInit {
     this.store.dispatch(setActivePlayerId({ activePlayerId: userId }));
 
     this.router.navigate(['/home', sessionId]);
+  }
+
+  flipCard(card: any): void {
+    this.card = !card;
   }
 }

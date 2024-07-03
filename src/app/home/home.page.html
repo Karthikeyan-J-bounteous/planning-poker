@@ -2,7 +2,55 @@
   <div id="container" *ngIf="!this.sessionId">
     <ion-button id="present-alert" (click)="startSession()" size="large" color="success">START</ion-button>
   </div>
-  <div id="container" *ngIf="this.sessionId">
-   <ion-title>hello</ion-title>
+  <div class="container" *ngIf="this.sessionId">
+    <div class="selected-container">
+      <div class="flip-card" [class.flipped]="card" (click)="flipCard(card)">
+        <div class="flip-card-inner">
+          <div class="card-front">
+            <ion-icon class="card-icon" name="dice"></ion-icon>
+          </div>
+          <div class="card-back">
+            H
+          </div>
+        </div>
+      </div>
+    </div>
+   <div class="selector-container" #cardContainer
+   [class.center-content]="!isOverflowing"
+   [class.start-content]="isOverflowing">
+    <div class="flip-card" [class.flipped]="card" (click)="flipCard(card)">
+      <div class="flip-card-inner">
+        <div class="card-front">
+          <ion-icon class="card-icon" name="dice"></ion-icon>
+        </div>
+        <div class="card-back">
+          H
+        </div>
+      </div>
+      <div class="fixed-label">Ra</div>
+    </div>
+    <div class="flip-card" [class.flipped]="card" (click)="flipCard(card)">
+      <div class="flip-card-inner">
+        <div class="card-front">
+          <ion-icon class="card-icon" name="dice"></ion-icon>
+        </div>
+        <div class="card-back">
+          H
+        </div>
+      </div>
+      <div class="fixed-label">Ra</div>
+    </div>    <div class="flip-card" [class.flipped]="card" (click)="flipCard(card)">
+      <div class="flip-card-inner">
+        <div class="card-front">
+          <ion-icon class="card-icon" name="dice"></ion-icon>
+        </div>
+        <div class="card-back">
+          H
+        </div>
+      </div>
+      <div class="fixed-label">Ra</div>
+    </div>
+   </div>
+   <app-info-modal></app-info-modal>
   </div>
 </ion-content>

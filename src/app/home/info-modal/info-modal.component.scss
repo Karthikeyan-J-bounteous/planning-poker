@@ -1,0 +1,72 @@
+:host {
+    height: 40%;
+    width: 100%;
+  }
+  
+  .card-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 75%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    padding-top: 20px;
+  }
+
+  .card-icon{
+    font-size: 45px;
+    color: #ffdee1;
+  }
+
+  .center-content {
+    justify-content: center;
+  }
+  
+  .start-content {
+    justify-content: flex-start;
+  }
+  
+
+  .button-container{
+    display: flex;
+    align-items:start;
+    justify-content: center;
+    width: 100%;
+    height: 25%;
+  }
+  
+  .flip-card {
+    width: 100px;
+    margin: 20px 8px;
+    height: 150px;
+    min-width: 100px;
+    min-height: 150px;
+    perspective: 1000px;
+  }
+  
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: 3px dashed #000;
+    border-radius: 10px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  
+  .flip-card-inner.clicked {
+    transform: translateY(-40px); /* Moves the card up by 10 pixels */
+  }
+  
+  .card-front {
+    background-color: #ea8484;
+    color: white;
+  }
+
+  .card-data{
+    color: #ffdee1;
+    font-size: 25pt;
+  }
+  

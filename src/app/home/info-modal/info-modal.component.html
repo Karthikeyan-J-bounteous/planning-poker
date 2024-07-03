@@ -1,3 +1,29 @@
-<p>
-  info-modal works!
-</p>
+<div class="card-container" #cardContainer
+     [class.center-content]="!isOverflowing"
+     [class.start-content]="isOverflowing">
+  <div class="flip-card" *ngFor="let k of cards[selectedDeck]" (click)="click(k)">
+    <div class="flip-card-inner" [class.clicked]="isClicked == k">
+      <div class="card-front">
+        <h2 class="card-data">{{k}}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="flip-card" (click)="click('h')">
+    <div class="flip-card-inner" [class.clicked]="isClicked == 'h'">
+      <div class="card-front">
+        <ion-icon class="card-icon" name="help"></ion-icon>
+      </div>
+    </div>
+  </div>
+  <div class="flip-card" (click)="click('c')">
+    <div class="flip-card-inner" [class.clicked]="isClicked == 'c'">
+      <div class="card-front">
+        <ion-icon class="card-icon" name="cafe"></ion-icon>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="button-container">
+  <ion-button>hello</ion-button>
+</div>
