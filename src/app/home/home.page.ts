@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Game } from '../interface/game.interface';
 import { AppState } from '../interface/state.interface';
 import { Store } from '@ngrx/store';
 import { mockGame, mockPlayer } from '../mocks/mock-data';
-import { updateGame } from '../store/actions/game.actions';
+import { resetStore, updateGame } from '../store/actions/game.actions';
 import { Player } from '../interface/player.interface';
 import { selectActivePlayerId, selectPlayers } from '../store/selectors/player.selectors';
-import { setActivePlayerId, addPlayer, addNewPlayer, updatePlayer, updatePlayerName } from '../store/actions/player.actions';
-import { map, filter, switchMap } from 'rxjs/operators';
+import { setActivePlayerId, addPlayer, updatePlayerName } from '../store/actions/player.actions';
+import { map, filter, switchMap, tap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -48,40 +49,48 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     this.sessionId = this.route.snapshot.paramMap.get('sessionId');
-    // if (this.sessionId) {
-    //   this.askName();
-    // }
+
+    if (!this.sessionId) {
+      this.store.dispatch(resetStore());
+    }
 
     this.subscribeToStore(this.game$, 'Game Data');
     this.subscribeToStore(this.players$, 'Player Data');
     this.subscribeToStore(this.activeId$, 'ID Data');
 
-    this.activeId$?.subscribe(data => {
-      console.log("here", data)
-      if(!data?.length && this.sessionId){
-        console.log('inside data')
-        const userId = this.generateId(Date.now().toString(), 20);
-        this.playerData = { ...this.playerData, id: userId, isPlaying: true, isPresent: true, role: 'player' };
-        this.gameData.id = this.sessionId;
-        this.gameData.playerIds.push(userId);
-
-        this.store.dispatch(updateGame({ game: this.gameData }));
-        this.store.dispatch(addPlayer({ player: this.playerData }));
-        this.store.dispatch(setActivePlayerId({ activePlayerId: userId }));
-        this.askName();
-      }
-    }).unsubscribe();
-
     this.activeId$?.pipe(
+      take(1),
+      tap(activeId => {
+        if (!activeId && this.sessionId) {
+          this.initializePlayer();
+        }
+      }),
       filter(activeId => !!activeId),
-      switchMap(activeId => this.players$?.pipe(
-        map(players => players.find(player => player.id === activeId))
-      ) ?? [])
+      switchMap(activeId =>
+        this.players$?.pipe(
+          map(players => players.find(player => player.id === activeId))
+        ) ?? of(null)
+      )
     ).subscribe(player => {
       if (player) {
         this.playerData = player;
+        if (!player.name.length) {
+          this.askName();
+        }
       }
-    });
+    })
+  }
+
+  initializePlayer(): void {
+    const userId = this.generateId(Date.now().toString(), 20);
+    this.playerData = { ...this.playerData, id: userId, isPlaying: true, isPresent: true, role: 'player' };
+    this.gameData.id = this.sessionId!;
+    this.gameData.playerIds.push(userId);
+
+    this.store.dispatch(updateGame({ game: this.gameData }));
+    this.store.dispatch(addPlayer({ player: this.playerData }));
+    this.store.dispatch(setActivePlayerId({ activePlayerId: userId }));
+    this.askName();
   }
 
   subscribeToStore<T>(observable$: Observable<T> | undefined, label: string): void {
@@ -130,7 +139,7 @@ export class HomePage implements OnInit {
     this.gameData.id = sessionId;
 
     this.store.dispatch(updateGame({ game: this.gameData }));
-    this.store.dispatch(addNewPlayer({ player: this.playerData }));
+    this.store.dispatch(addPlayer({ player: this.playerData }));
     this.store.dispatch(setActivePlayerId({ activePlayerId: userId }));
 
     this.router.navigate(['/home', sessionId]);

@@ -6,7 +6,7 @@
   </ion-header>
   <ion-content class="ion-padding">
     <div>
-      <ion-button expand="block" (click)="writeToClipboard()">Copy to Clipboard</ion-button>
+      <ion-button color="medium" expand="block" (click)="writeToClipboard()">Copy to Clipboard</ion-button>
       <qrcode class="menu-qr" [qrdata]="this.gameUrl" [allowEmptyString]="true" [width]="272" [errorCorrectionLevel]="'M'"></qrcode>
     </div>
   </ion-content>
@@ -19,7 +19,51 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    <div>e=hello</div>
+    <h2 style="color: #3b3b49;">Game Name</h2>
+    <div class="game-name">
+      <ion-input color="light" [(ngModel)]="gameName" fill="outline" placeholder="Enter game name"></ion-input>
+      <ion-button color="medium" (click)="updateGameName()">
+        <ion-icon name="send"></ion-icon>
+      </ion-button>
+    </div>
+    <h2 style="color: #3b3b49;">Deck</h2>
+    <div style="margin-bottom: 25px;">
+      <ion-list class="custom-list">
+        <ion-radio-group [(ngModel)]="selectedDeck" (ionChange)="selectDeck()">
+          <ion-item *ngFor="let deck of decks">
+            <ion-radio color="medium" [value]="deck">{{ deck }}</ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+      <p style="color: black; margin-bottom: 3px;"><strong>fibonacci </strong>estimate with exponential degrees of difficulty</p>
+      <p style="color: black; margin-bottom: 3px;"><strong>modified fibonacci </strong>similar to the fibonacci deck, but with simplified large numbers and a half-point</p>
+      <p style="color: black; margin-bottom: 3px;"><strong>shirt sizes </strong>usually for understanding the relative feasability of far-off features</p>
+      <br>
+    </div>
+    <h2 style="color: #3b3b49;">Rounding</h2>
+    <div style="margin-bottom: 25px;">
+      <ion-segment class="ion-seg" [(ngModel)]="selectedRound" (ionChange)="selectRounding()">
+        <ion-segment-button class="ion-seg-b" value="up">
+          <ion-label>UP</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="down">
+          <ion-label>DOWN</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <p style="color: black;">round the average estimate up or down to the nearest card in the deck</p>
+    </div>
+    <h2 style="color: #3b3b49;">Change Card</h2>
+    <div style="margin-bottom: 25px;">
+      <ion-segment class="ion-seg" [(ngModel)]="selectedChange" (ionChange)="selectChange()">
+        <ion-segment-button class="ion-seg-b" value="yes">
+          <ion-label>UP</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="no">
+          <ion-label>DOWN</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <p style="color: black;">choose whether players can change their estimate after the cards have been revealed</p>
+    </div>
   </ion-content>
 </ion-menu>
 
@@ -30,7 +74,26 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    <div>e=hello</div>
+    <h2 style="color: #3b3b49;">HOST</h2>
+    <div>
+      <ion-list class="menu-list" [inset]="false">
+        <div *ngFor="let player of playersData">
+        <ion-item *ngIf="player.role == 'host'">
+          <ion-label >{{ player.name }}</ion-label>
+        </ion-item>
+      </div>
+      </ion-list>
+    </div>
+    <h2 style="color: #3b3b49;">PLAYERS</h2>
+    <div>
+      <ion-list class="menu-list" [inset]="false">
+        <div *ngFor="let player of playersData">
+        <ion-item *ngIf="player.role == 'player'">
+          <ion-label >{{ player.name }}</ion-label>
+        </ion-item>
+      </div>
+      </ion-list>
+    </div>
   </ion-content>
 </ion-menu>
 
@@ -41,7 +104,25 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    <div>e=hello</div>
+    <h2 style="color: #3b3b49;">Player Name</h2>
+    <div class="game-name">
+      <ion-input color="light" [(ngModel)]="playerName" fill="outline" placeholder="Enter player name"></ion-input>
+      <ion-button color="medium" (click)="updatePlayerName()">
+        <ion-icon name="send"></ion-icon>
+      </ion-button>
+    </div>
+    <h2 style="color: #3b3b49;">Spectatating</h2>
+    <div style="margin-bottom: 25px;">
+      <ion-segment class="ion-seg" [(ngModel)]="isSpectating" (ionChange)="toggleSpect()">
+        <ion-segment-button class="ion-seg-b" value="yes">
+          <ion-label>YES</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="no">
+          <ion-label>NO</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <p style="color: black;">choose whether you are participating in the estimation</p>
+    </div>
   </ion-content>
 </ion-menu>
 
@@ -56,10 +137,10 @@
       <ion-item class="menu-list">
         <ion-label (click)="openFirstMenu('share')"><ion-icon name="share-social-sharp" /> Share</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item *ngIf="this.playerDetail.role=='host'">
         <ion-label (click)="openFirstMenu('settings')"><ion-icon name="settings-sharp" /> Settings</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item *ngIf="this.playerDetail.role=='host'">
         <ion-label (click)="openFirstMenu('group')"><ion-icon name="people-sharp" /> Group</ion-label>
       </ion-item>
       <ion-item>

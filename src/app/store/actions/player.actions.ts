@@ -14,7 +14,7 @@ export const addNewPlayer = createAction(
 
 export const updatePlayer = createAction(
   '[Player] Update Player',
-  props<{ player: Player }>()
+  props<{ id: string | null, player: Partial<Player> }>()
 );
 
 export const setActivePlayerId = createAction( // Add this action

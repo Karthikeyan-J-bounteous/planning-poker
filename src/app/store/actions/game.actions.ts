@@ -5,3 +5,5 @@ export const updateGame = createAction(
   '[Game] Update Game',
   props<{ game: Game }>()
 );
+
+export const resetStore = createAction('[App] Reset Store');

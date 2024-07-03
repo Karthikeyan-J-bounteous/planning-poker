@@ -5,6 +5,7 @@ import { Clipboard } from '@capacitor/clipboard';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { StoreModule } from '@ngrx/store';
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -15,7 +16,7 @@ import { metaReducers } from './store/reducers/local-storage-sync.reducer';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, MenuComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, QRCodeModule, StoreModule.forRoot(reducers, { metaReducers }),],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,FormsModule, QRCodeModule, StoreModule.forRoot(reducers, { metaReducers }),],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

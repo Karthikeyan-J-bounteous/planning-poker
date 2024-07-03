@@ -18,3 +18,48 @@ ion-button{
 .menu-qr{
   margin: 10px;
 }
+
+.game-name{
+  color: black;
+  gap: 5px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+ion-input.custom {
+  --background: #F1D3B3;
+  --color: #000000;
+  --placeholder-color: #ddd;
+  --placeholder-opacity: 0.8;
+
+  --padding-bottom: 10px;
+  --padding-end: 10px;
+  --padding-start: 10px;
+  --padding-top: 10px;
+}
+
+.custom-list{
+  padding: 0px !important;
+  background: #F1D3B3;
+  background-color: #F1D3B3;
+}
+
+ion-segment-button {
+  --indicator-color: #08a391;
+}
+
+/* Material Design styles */
+ion-segment-button.md {
+  --color: #000;
+  --color-checked: #08a391;
+  --indicator-height: 4px;
+}
+
+/* iOS styles */
+ion-segment-button.ios {
+  --color: #00574d;
+  --color-checked: #e99696;
+  --border: 5px;
+  --border-radius: 20px;
+}
