@@ -5,7 +5,8 @@ import { Game } from 'src/app/interface/game.interface';
 import { Player } from 'src/app/interface/player.interface';
 import { AppState } from 'src/app/interface/state.interface';
 import { mockGame } from 'src/app/mocks/mock-data';
-import { updatePlayer } from 'src/app/store/actions/player.actions';
+import { updateGame } from 'src/app/store/actions/game.actions';
+import { clearPlayerSelection, updatePlayer } from 'src/app/store/actions/player.actions';
 import { selectActivePlayerId, selectPlayers } from 'src/app/store/selectors/player.selectors';
 
 @Component({
@@ -84,10 +85,16 @@ export class InfoModalComponent  implements OnInit {
   }
 
   click(val : string){
-    console.log(val, this.isClicked, this.isSpectating)
-    if(val == this.isClicked || this.isSpectating) return;
+    console.log(val, this.isClicked, this.isSpectating, !this.gameData.show, (this.gameData.show && !this.gameData.canChangeCard))
+    if(val == this.isClicked || this.isSpectating || (this.gameData.show && !this.gameData.canChangeCard)) return;
     this.isClicked = val;
     this.store.dispatch(updatePlayer({ id: this.activePlayerId, player: { selectedCard: this.isClicked, hasSelectedCard: !!this.isClicked } }));
+  }
+
+  clickReveal(){
+    if(this.gameData.show)  this.store.dispatch(clearPlayerSelection());
+    this.gameData.show = !this.gameData.show;
+    this.store.dispatch(updateGame({game: this.gameData}));
   }
 
 }

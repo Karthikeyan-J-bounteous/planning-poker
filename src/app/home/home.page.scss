@@ -21,6 +21,11 @@ ion-content {
   line-height: 26px;
 }
 
+.card-icon-2{
+  font-size: 45px;
+  color: #446e46;
+}
+
 .container {
   height: 100%;
   width: 100%;
@@ -105,6 +110,10 @@ ion-content {
   --color: green; // Apply success color to button
 }
 
+.card-data{
+  color: #446e46;
+  font-size: 25pt;
+}
 
 .flip-card {
   width: 100px;

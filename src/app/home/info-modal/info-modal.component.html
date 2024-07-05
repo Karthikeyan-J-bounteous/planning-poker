@@ -25,5 +25,5 @@
 </div>
 
 <div class="button-container">
-  <ion-button>hello</ion-button>
+  <ion-button [color]="this.gameData.show? 'danger' : 'success'" (click)="clickReveal()">{{ this.gameData.show? 'REFRESH' : 'SHOW' }}</ion-button>
 </div>

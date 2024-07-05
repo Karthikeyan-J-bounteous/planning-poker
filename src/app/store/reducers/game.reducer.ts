@@ -4,13 +4,13 @@ import { resetStore, updateGame } from 'src/app/store/actions/game.actions';
 
 export const initialState: Game = {
   canChangeCard: false,
-  show: true,
+  show: false,
   deck: 0,
   id: '',
-  reveal: false,
-  mode: '',
+  reveal: true,
+  mode: 'modifiedFibonacci',
   name: '',
-  rounding: false,
+  rounding: true,
   playerIds: []
 };
 

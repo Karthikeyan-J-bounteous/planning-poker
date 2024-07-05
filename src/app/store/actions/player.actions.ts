@@ -26,3 +26,7 @@ export const updatePlayerName = createAction( // New action
   '[Player] Update Player Name',
   props<{ id: string, name: string }>()
 );
+
+export const clearPlayerSelection = createAction( // New action
+  '[Player] Clear Player selection'
+);

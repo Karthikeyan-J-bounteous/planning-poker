@@ -4,13 +4,15 @@
   </div>
   <div class="container" *ngIf="this.sessionId">
     <div class="selected-container">
-      <div class="flip-card" [class.flipped]="card" (click)="flipCard(card)">
+      <div class="flip-card" [class.flipped]="showCard">
         <div class="flip-card-inner">
           <div class="card-front">
             <ion-icon class="card-icon" name="dice"></ion-icon>
           </div>
           <div class="card-back">
-            H
+            <div  class="card-data">
+              {{ calculateAverage() }}
+            </div>
           </div>
         </div>
       </div>
@@ -18,16 +20,19 @@
    <div class="selector-container" #cardContainer
    [class.center-content]="!isOverflowing"
    [class.start-content]="isOverflowing">
-    <div class="flip-card" [class.flipped]="card" (click)="flipCard(card)" *ngFor="let player of playersData">
+    <div class="flip-card" [class.flipped]="showCard && gameData.reveal" *ngFor="let player of playersData">
       <div class="flip-card-inner">
-        <div class="card-front">
+        <div class="card-front" *ngIf="player.selectedCard?.length">
           <ion-icon class="card-icon" name="dice"></ion-icon>
         </div>
-        <div class="card-back">
-          H
+        <div class="card-back" *ngIf="player.selectedCard?.length">
+          <div class="card-data" *ngIf="(player.selectedCard != 'h' && player.selectedCard != 'c')">
+          {{ player.selectedCard }}
+        </div>
+        <ion-icon class="card-icon-2" *ngIf="!(player.selectedCard != 'h' && player.selectedCard != 'c')" [name]="player.selectedCard == 'h' ? 'help' : 'cafe'"></ion-icon>
         </div>
       </div>
-      <div class="fixed-label">Ra</div>
+      <div class="fixed-label" [title]="this.player.name">{{ player.name | abbreviateName}}</div>
     </div>   
    </div>
    <app-info-modal></app-info-modal>

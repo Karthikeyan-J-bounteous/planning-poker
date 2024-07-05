@@ -6,6 +6,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { InfoModalComponent } from './info-modal/info-modal.component';
+import { AbbreviateNamePipe } from '../pipes/abbreviate-name.pipe';
 
 
 @NgModule({
@@ -15,6 +16,6 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, InfoModalComponent]
+  declarations: [HomePage, InfoModalComponent, AbbreviateNamePipe]
 })
 export class HomePageModule {}

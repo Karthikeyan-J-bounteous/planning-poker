@@ -22,7 +22,6 @@ export class MenuComponent implements OnInit {
 
   playerName: string = "";
   isSpectating?: string;
-  isAdmin: boolean = false;
 
   public game$?: Observable<Game>;
   public players$?: Observable<Player[]>;
@@ -38,9 +37,9 @@ export class MenuComponent implements OnInit {
   public gameUrl: string = '';
 
   selectedDeck: string = 'modifiedFibonacci';
-  selectedRound: string = 'down';
+  selectedRound: string = 'up';
   revealCards: string = 'yes';
-  selectedChange: string = "yes";
+  selectedChange: string = "no";
   decks: string[] = ['fibonaci', 'modifiedFibonacci', 'shirtSizes']
 
   constructor(
@@ -64,6 +63,10 @@ export class MenuComponent implements OnInit {
         this.gameName = gameData.name;
         this.userEntered = !!gameData?.id?.length;
         this.gameUrl = gameData.id.length ? `https://www.planning-poker.com/home/${gameData.id}` : '';
+        this.selectedChange = this.gameData.canChangeCard? 'yes' : 'no';
+        this.selectedRound = this.gameData.rounding? 'up' : 'down';
+        this.selectedDeck = this.gameData.mode;
+        this.revealCards = this.gameData.reveal? 'yes' : 'no';
 
         this.playersData = [...playersData];
         this.activePlayerId = activeId;

@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
   public players$?: Observable<Player[]>;
   public activeId$?: Observable<string | null>;
 
-  public card = true;
+  public showCard = false;
 
   @ViewChild('cardContainer') cardContainer?: ElementRef<HTMLDivElement>;
   isOverflowing: boolean = false;
@@ -41,6 +41,12 @@ export class HomePage implements OnInit {
       name: 'dataInput',
       placeholder: 'Enter Name',
     }
+  ];
+
+  private cards: Array<string>[] = [
+    ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89'],
+    ['0', '1/2', '1', '2', '3', '5', '8', '13', '20', '49', '100'],
+    ['XS', 'S', 'M', 'L', 'XL']
   ];
 
   constructor(
@@ -73,6 +79,8 @@ export class HomePage implements OnInit {
       map(([gameData, playersData, activeId]) => {
         this.gameData = { ...gameData };
 
+        this.showCard = gameData.show;
+
         this.playersData = [...playersData];
         this.activePlayerId = activeId;
 
@@ -80,6 +88,7 @@ export class HomePage implements OnInit {
         if (playerData) {
           this.playerData = { ...this.playerData, ...playerData };
         }
+        console.log("avg", this.calculateAverage())
       })
     ).subscribe();
 
@@ -180,7 +189,40 @@ export class HomePage implements OnInit {
     this.router.navigate(['/home', sessionId]);
   }
 
-  flipCard(card: any): void {
-    this.card = !card;
+
+  private parseCardValue(card: string): number {
+    if (card.includes('/')) {
+      const [numerator, denominator] = card.split('/').map(Number);
+      return numerator / denominator;
+    } else if (isNaN(parseFloat(card))) {
+      const sizeMap: {[key: string]: number} = { 'XS': 1, 'S': 2, 'M': 3, 'L': 4, 'XL': 5 };
+      return sizeMap[card] || 0;
+    } else {
+      return parseFloat(card);
+    }
   }
+
+  public calculateAverage(): string {
+    const selectedCards = this.playersData
+    .filter(player => player.selectedCard && player.selectedCard !== 'c' && player.selectedCard !== 'h')
+    .map(player => player.selectedCard!);
+    if(!selectedCards.length) return '?';
+    const deck = this.cards[this.gameData.deck];
+    const numericValues = selectedCards.map(card => this.parseCardValue(card));
+    const average = numericValues.reduce((acc, cur) => acc + cur, 0) / numericValues.length;
+
+    // Find the closest card value
+    const closestValue = deck.reduce((prev, curr) => {
+      const prevDiff = Math.abs(this.parseCardValue(prev.toString()) - average);
+      const currDiff = Math.abs(this.parseCardValue(curr.toString()) - average);
+      if (!this.gameData.rounding) {
+        return (currDiff < prevDiff || (currDiff === prevDiff && this.parseCardValue(curr.toString()) < this.parseCardValue(prev.toString()))) ? curr : prev;
+      } else {
+        return (currDiff < prevDiff || (currDiff === prevDiff && this.parseCardValue(curr.toString()) > this.parseCardValue(prev.toString()))) ? curr : prev;
+      }
+    });
+
+    return closestValue.toString();
+  }
+
 }
