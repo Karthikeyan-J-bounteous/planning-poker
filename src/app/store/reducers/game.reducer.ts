@@ -5,7 +5,7 @@ import { resetStore, updateGame } from 'src/app/store/actions/game.actions';
 export const initialState: Game = {
   canChangeCard: false,
   show: false,
-  deck: 0,
+  deck: 1,
   id: '',
   reveal: true,
   mode: 'modifiedFibonacci',
