@@ -24,6 +24,6 @@
   </div>
 </div>
 
-<div class="button-container">
+<div class="button-container" *ngIf="isAdmin">
   <ion-button [color]="this.gameData.show? 'danger' : 'success'" (click)="clickReveal()">{{ this.gameData.show? 'REFRESH' : 'SHOW' }}</ion-button>
 </div>

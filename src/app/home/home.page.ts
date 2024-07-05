@@ -88,7 +88,6 @@ export class HomePage implements OnInit {
         if (playerData) {
           this.playerData = { ...this.playerData, ...playerData };
         }
-        console.log("avg", this.calculateAverage())
       })
     ).subscribe();
 

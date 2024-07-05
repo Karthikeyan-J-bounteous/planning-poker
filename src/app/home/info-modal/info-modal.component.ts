@@ -24,6 +24,7 @@ export class InfoModalComponent  implements OnInit {
   public players$?: Observable<Player[]>;
   public activeId$?: Observable<string | null>;
   public playerDetail: Player = {} as Player;
+  public isAdmin ?: boolean = false;
 
   isSpectating?: boolean;
 
@@ -66,7 +67,7 @@ export class InfoModalComponent  implements OnInit {
         if (playerData) {
           this.playerDetail = { ...this.playerDetail, ...playerData };
           this.isSpectating = !this.playerDetail.isPlaying;
-          console.log(this.playerDetail.isPlaying, this.isSpectating)
+          this.isAdmin = this.playerDetail.role == 'host';
           this.isClicked = !this.isSpectating? this.playerDetail.selectedCard : undefined;
         }
       })
@@ -85,7 +86,6 @@ export class InfoModalComponent  implements OnInit {
   }
 
   click(val : string){
-    console.log(val, this.isClicked, this.isSpectating, !this.gameData.show, (this.gameData.show && !this.gameData.canChangeCard))
     if(val == this.isClicked || this.isSpectating || (this.gameData.show && !this.gameData.canChangeCard)) return;
     this.isClicked = val;
     this.store.dispatch(updatePlayer({ id: this.activePlayerId, player: { selectedCard: this.isClicked, hasSelectedCard: !!this.isClicked } }));

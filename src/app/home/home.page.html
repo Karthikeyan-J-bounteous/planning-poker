@@ -20,7 +20,8 @@
    <div class="selector-container" #cardContainer
    [class.center-content]="!isOverflowing"
    [class.start-content]="isOverflowing">
-    <div class="flip-card" [class.flipped]="showCard && gameData.reveal" *ngFor="let player of playersData">
+   <div *ngFor="let player of playersData">
+    <div class="flip-card" [class.flipped]="showCard && gameData.reveal" *ngIf="player.isPlaying">
       <div class="flip-card-inner">
         <div class="card-front" *ngIf="player.selectedCard?.length">
           <ion-icon class="card-icon" name="dice"></ion-icon>
@@ -33,7 +34,8 @@
         </div>
       </div>
       <div class="fixed-label" [title]="this.player.name">{{ player.name | abbreviateName}}</div>
-    </div>   
+    </div>  
+  </div> 
    </div>
    <app-info-modal></app-info-modal>
   </div>
