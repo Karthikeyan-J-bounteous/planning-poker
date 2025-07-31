@@ -15,10 +15,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SocketService } from '../services/socket.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-home',
+    templateUrl: 'home.page.html',
+    styleUrls: ['home.page.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class HomePage implements OnInit {
 

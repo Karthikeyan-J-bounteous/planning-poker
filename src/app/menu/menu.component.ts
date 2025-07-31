@@ -13,10 +13,11 @@ import { selectActivePlayerId, selectPlayers } from '../store/selectors/player.s
 import { updatePlayer } from '../store/actions/player.actions';
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-menu',
+    templateUrl: './menu.component.html',
+    styleUrls: ['./menu.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class MenuComponent implements OnInit {
 

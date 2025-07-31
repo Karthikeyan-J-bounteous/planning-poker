@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'abbreviateName'
+    name: 'abbreviateName',
+    standalone: false
 })
 export class AbbreviateNamePipe implements PipeTransform {
 

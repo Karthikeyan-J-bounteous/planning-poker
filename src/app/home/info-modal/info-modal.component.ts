@@ -10,9 +10,10 @@ import { clearPlayerSelection, updatePlayer } from 'src/app/store/actions/player
 import { selectActivePlayerId, selectPlayers } from 'src/app/store/selectors/player.selectors';
 
 @Component({
-  selector: 'app-info-modal',
-  templateUrl: './info-modal.component.html',
-  styleUrls: ['./info-modal.component.scss'],
+    selector: 'app-info-modal',
+    templateUrl: './info-modal.component.html',
+    styleUrls: ['./info-modal.component.scss'],
+    standalone: false
 })
 export class InfoModalComponent  implements OnInit {
 
