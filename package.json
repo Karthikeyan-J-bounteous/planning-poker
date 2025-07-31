@@ -5,7 +5,7 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ionic serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -24,7 +24,7 @@
     "@capacitor/clipboard": "^6.0.0",
     "@capacitor/core": "^6.1.0",
     "@ionic/angular": "^8.0.0",
-    "@ngrx/effects": "^18.0.1",
+    "@ngrx/effects": "^18.1.1",
     "@ngrx/entity": "^18.0.1",
     "@ngrx/store": "^18.0.1",
     "@ngrx/store-devtools": "^18.0.1",
@@ -32,6 +32,7 @@
     "ionicons": "^7.0.0",
     "ngrx-store-localstorage": "^18.0.0",
     "rxjs": "~7.8.0",
+    "socket.io-client": "^4.8.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
   },

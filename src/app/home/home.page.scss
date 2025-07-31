@@ -8,7 +8,6 @@ ion-content {
 
 #container {
   text-align: center;
-
   position: absolute;
   left: 0;
   right: 0;
@@ -16,9 +15,45 @@ ion-content {
   transform: translateY(-50%);
 }
 
+.name-input{
+  margin: auto;
+  max-width: 400px;
+  --background: #cfa885;
+  color: black;
+  --border-color: black;
+  --border-radius: 6px !important;
+}
+
+.id-input{
+  margin: auto;
+  max-width: 400px;
+  --background: #c9c8a3;
+  --border-color: black;
+  color: black;
+  --border-radius: 6px !important;
+}
+
+.start{
+  --background: #AFD198;
+  margin-right: 16px;
+}
+
+.join{
+  --background: #9DB5B2;
+}
+
 #container strong {
   font-size: 20px;
   line-height: 26px;
+}
+
+.form-container{
+  height: 77px;
+  margin-bottom: 16px;
+
+  .error-text{
+    margin-top: 2px;
+  }
 }
 
 .card-icon-2{
@@ -31,8 +66,8 @@ ion-content {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content:last baseline; /* Optional: center content horizontally */
-  align-items: center;   /* Optional: center content vertically */
+  justify-content:last baseline;
+  align-items: center;
 
   ion-title{
     height: 30px;

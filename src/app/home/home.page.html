@@ -1,7 +1,37 @@
   <ion-content>
-  <div id="container" *ngIf="!this.sessionId">
-    <ion-button id="present-alert" (click)="startSession()" size="large" color="success">START</ion-button>
-  </div>
+    <div id="container" *ngIf="!sessionId" [formGroup]="myForm">
+      <div class="form-container">
+      <ion-input 
+        class="name-input" 
+        formControlName="name" 
+        fill="outline" 
+        placeholder="YOUR NAME" 
+        maxlength="20">
+      </ion-input>
+      <div class="error-text" *ngIf="myForm.controls['name'].invalid && myForm.controls['name'].touched">
+        <ion-text color="danger">Name is required</ion-text>
+      </div>
+    </div>
+    <div *ngIf="showID" class="form-container">
+      <ion-input 
+        class="id-input" 
+        formControlName="sessionId" 
+        fill="outline" 
+        placeholder="ENTER ID" 
+        maxlength="20">
+      </ion-input>
+      <div class="error-text" *ngIf="myForm.controls['sessionId'].hasError('required') && myForm.controls['sessionId'].touched">
+        <ion-text color="danger">ID is required for joining</ion-text>
+      </div>
+      <div class="error-text" *ngIf="myForm.controls['sessionId'].hasError('notFound') && myForm.controls['sessionId'].touched">
+        <ion-text color="danger">ID not found in our records</ion-text>
+      </div>
+    </div>
+    
+      <ion-button id="present-alert" class="start" (click)="startSession()" size="large">CREATE</ion-button>
+      <ion-button id="present-alert" class="join" (click)="joinSession()" size="large">JOIN</ion-button>
+    </div>
+    
   <div class="container" *ngIf="this.sessionId">
     <div class="selected-container">
       <div class="flip-card" [class.flipped]="showCard">
@@ -33,7 +63,7 @@
         <ion-icon class="card-icon-2" *ngIf="!(player.selectedCard != 'h' && player.selectedCard != 'c')" [name]="player.selectedCard == 'h' ? 'help' : 'cafe'"></ion-icon>
         </div>
       </div>
-      <div class="fixed-label" [title]="this.player.name">{{ player.name | abbreviateName}}</div>
+      <div class="fixed-label" [title]="player.name">{{ player.name | abbreviateName}}</div>
     </div>  
   </div> 
    </div>

@@ -1,6 +1,6 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import { Game } from 'src/app/interface/game.interface';
-import { resetStore, updateGame } from 'src/app/store/actions/game.actions';
+import { resetStore, updateGame, createGame } from 'src/app/store/actions/game.actions';
 
 export const initialState: Game = {
   canChangeCard: false,
@@ -17,6 +17,7 @@ export const initialState: Game = {
 const _gameReducer = createReducer(
   initialState,
   on(updateGame, (state, { game }) => ({ ...state, ...game })),
+  on(createGame, (state, { game }) => ({ ...state, ...game })),
   on(resetStore, () => initialState)
 );
 

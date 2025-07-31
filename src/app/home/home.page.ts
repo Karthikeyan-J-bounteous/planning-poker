@@ -6,11 +6,13 @@ import { Game } from '../interface/game.interface';
 import { AppState } from '../interface/state.interface';
 import { Store } from '@ngrx/store';
 import { mockGame, mockPlayer } from '../mocks/mock-data';
-import { resetStore, updateGame } from '../store/actions/game.actions';
+import { resetStore, updateGame, createGame, requestCreateSession } from '../store/actions/game.actions';
 import { Player } from '../interface/player.interface';
 import { selectActivePlayerId, selectPlayers } from '../store/selectors/player.selectors';
 import { setActivePlayerId, addPlayer, updatePlayerName } from '../store/actions/player.actions';
 import { map, filter, switchMap, tap, take } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SocketService } from '../services/socket.service';
 
 @Component({
   selector: 'app-home',
@@ -35,6 +37,8 @@ export class HomePage implements OnInit {
   public playersData: Player[] = [];
   public gameData: Game = { ...mockGame };
   public activePlayerId: string | null = null;
+  public showID: boolean = false;
+  public myForm: FormGroup;
 
   public alertInputs = [
     {
@@ -42,7 +46,7 @@ export class HomePage implements OnInit {
       placeholder: 'Enter Name',
     }
   ];
-
+  private existingSessionIds = ['session1', 'session2', 'session3'];
   private cards: Array<string>[] = [
     ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89'],
     ['0', '1/2', '1', '2', '3', '5', '8', '13', '20', '49', '100'],
@@ -53,11 +57,18 @@ export class HomePage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private alertController: AlertController,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private fb: FormBuilder,
+    private socketService: SocketService
   ) {
     this.game$ = this.store.select('game');
     this.players$ = this.store.select(selectPlayers);
     this.activeId$ = this.store.select(selectActivePlayerId);
+
+    this.myForm = this.fb.group({
+      name: ['', Validators.required],
+      sessionId: ['']
+    });
   }
 
   ngOnInit(): void {
@@ -167,25 +178,44 @@ export class HomePage implements OnInit {
     this.store.dispatch(updatePlayerName({ id: playerId, name: playerName }));
   }
 
-  generateId(prefix = '', length = 5): string {
+  generateId(prefix = '', length = 3): string {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const randomChars = Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
     return prefix + randomChars;
   }
 
   startSession(): void {
-    const userId = this.generateId(Date.now().toString(), 20);
-    this.playerData = { ...this.playerData, id: userId, isPlaying: true, isPresent: true, role: 'host' };
-    this.gameData = { ...this.gameData, playerIds: [...this.gameData.playerIds, userId] };
+    if (!this.myForm.valid) {
+      this.myForm.markAllAsTouched();
+      return;
+    }
+  
+    this.store.dispatch(requestCreateSession({ game: this.gameData, playerName: this.myForm.value.name }));
+  }
 
-    const sessionId = this.generateId(new Date().getTime().toString(), 5);
-    this.gameData = { ...this.gameData, id: sessionId };
+  joinSession(): void {
+    if (!this.showID) {
+      this.showID = true;
+      return;
+    }
 
-    this.store.dispatch(updateGame({ game: this.gameData }));
-    this.store.dispatch(addPlayer({ player: this.playerData }));
-    this.store.dispatch(setActivePlayerId({ activePlayerId: userId }));
+    const idControl = this.myForm.get('sessionId');
+    idControl?.setValidators(Validators.required);
+    idControl?.updateValueAndValidity();
 
-    this.router.navigate(['/home', sessionId]);
+    if (!this.myForm.valid) {
+      this.myForm.markAllAsTouched();
+      return
+    }
+
+    const enteredId = idControl?.value;
+    if (this.existingSessionIds.includes(enteredId)) {
+      // Proceed with join logic if session ID is found
+      console.log('Session joined');
+    } else {
+      // Set a custom error on the sessionId control if the ID is not found
+      idControl?.setErrors({ notFound: true });
+    }
   }
 
 
